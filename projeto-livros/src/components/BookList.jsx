@@ -7,8 +7,13 @@ import {
   TableRow,
   Paper
 } from "@mui/material";
+import { useMemo } from "react";
 
 function BookList({ books, onSelect }) {
+  const limitedBooks = useMemo(() => {
+    return books.slice(0, 10);
+  }, [books]);
+
   return (
     <TableContainer component={Paper} sx={{ mt: 3 }}>
       <Table>
@@ -21,7 +26,7 @@ function BookList({ books, onSelect }) {
         </TableHead>
 
         <TableBody>
-          {books.slice(0, 10).map((book, index) => (
+          {limitedBooks.map((book, index) => (
             <TableRow
               key={index}
               hover
