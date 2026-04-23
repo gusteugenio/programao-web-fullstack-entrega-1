@@ -14,7 +14,7 @@ import {
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 function App() {
-  const { selectedBook, error, loading } = useBooks();
+  const { selectedBook, searchError, loading } = useBooks();
 
   return (
     <Container maxWidth="md" sx={{ mt: 5 }}>
@@ -37,9 +37,9 @@ function App() {
           <Search />
         )}
 
-        {error && (
+        {searchError && (
           <Typography color="error" sx={{ mt: 2 }}>
-            {error}
+            {searchError}
           </Typography>
         )}
 

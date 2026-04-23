@@ -5,26 +5,26 @@ export function BooksProvider({ children }) {
   const [query, setQueryState] = useState("");
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
-  const [error, setError] = useState("");
+  const [searchError, setSearchError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const setQuery = (value) => {
     setQueryState(value);
+    setSearchError("");
 
     if (!value.trim()) {
       setBooks([]);
-      setError("");
       setSelectedBook(null);
     }
   };
 
   const searchBooks = async () => {
-    setError("");
+    setSearchError("");
 
     if (!query.trim()) {
-      setError("Digite o nome de um livro.");
       setBooks([]);
-      return;
+      setSelectedBook(null);
+      return false;
     }
 
     try {
@@ -42,15 +42,17 @@ export function BooksProvider({ children }) {
       const data = await response.json();
 
       if (!data.docs || data.docs.length === 0) {
-        setError("Nenhum livro encontrado.");
+        setSearchError("Nenhum livro foi encontrado para essa busca.");
         setBooks([]);
-        return;
+        return false;
       }
 
       setBooks(data.docs);
+      return true;
     } catch {
-      setError("Erro na requisição.");
+      setSearchError("Nao foi possivel buscar os livros agora. Tente novamente.");
       setBooks([]);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -71,7 +73,7 @@ export function BooksProvider({ children }) {
         setQuery,
         books,
         selectedBook,
-        error,
+        searchError,
         loading,
         searchBooks,
         selectBook,
