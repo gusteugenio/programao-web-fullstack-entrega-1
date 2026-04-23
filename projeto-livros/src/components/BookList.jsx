@@ -1,24 +1,45 @@
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper
+} from "@mui/material";
 
-function BookList({ books }) {
+function BookList({ books, onSelect }) {
   return (
-    <Grid container spacing={2} style={{ marginTop: 20 }}>
-      {books.slice(0, 10).map((book, index) => (
-        <Grid item xs={12} key={index}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6">
-                {book.title}
-              </Typography>
+    <TableContainer component={Paper} sx={{ mt: 3 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell><strong>Título</strong></TableCell>
+            <TableCell><strong>Autor</strong></TableCell>
+            <TableCell><strong>Ano</strong></TableCell>
+          </TableRow>
+        </TableHead>
 
-              <Typography color="text.secondary">
-                {book.author_name?.[0] || "Autor desconhecido"}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+        <TableBody>
+          {books.slice(0, 10).map((book, index) => (
+            <TableRow
+              key={index}
+              hover
+              sx={{ cursor: "pointer" }}
+              onClick={() => onSelect(book)}
+            >
+              <TableCell>{book.title}</TableCell>
+              <TableCell>
+                {book.author_name?.[0] || "Desconhecido"}
+              </TableCell>
+              <TableCell>
+                {book.first_publish_year || "N/A"}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
